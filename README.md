@@ -10,10 +10,8 @@ browser extension, or a replayed snapshot inside an iframe.
 
 ## Install
 
-Releases ship a packed tarball:
-
 ```sh
-pnpm add https://github.com/qiyascc/overlay-sdk/releases/download/v0.1.0/qiyascc-clarity-overlay-0.1.0.tgz
+npm install @qiyas/overlay-sdk
 ```
 
 or load `dist/clarity-overlay.iife.js`, which exposes `window.ClarityOverlay`.
@@ -21,7 +19,7 @@ or load `dist/clarity-overlay.iife.js`, which exposes `window.ClarityOverlay`.
 ## Usage
 
 ```ts
-import { mountOverlay } from "@qiyascc/clarity-overlay";
+import { mountOverlay } from "@qiyas/overlay-sdk";
 
 const overlay = mountOverlay(
   {
