@@ -1,6 +1,5 @@
 export { resolveAnchor } from "./anchor";
 export { colorize, heatColor } from "./heat";
-export type { ImageLoader, LoadedImage } from "./layers/heatmap";
 export { mountOverlay, Overlay, type OverlayConfig } from "./overlay";
 export type {
   Anchor,
@@ -8,7 +7,9 @@ export type {
   Category,
   ClickTarget,
   Heatmap,
+  ImageLoader,
   LayerName,
+  LoadedImage,
   Note,
   OverlayData,
   OverlayOptions,

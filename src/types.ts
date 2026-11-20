@@ -59,10 +59,14 @@ export interface OverlayData {
 
 export type LayerName = "heatmap" | "clicks" | "notes";
 
+export type LoadedImage = CanvasImageSource & { width: number; height: number };
+export type ImageLoader = (src: string) => Promise<LoadedImage>;
+
 export interface OverlayOptions {
   document?: Document;
   layers?: Partial<Record<LayerName, boolean>>;
   opacity?: number;
   panel?: boolean;
+  loadImage?: ImageLoader;
   onFocusNote?: (note: Note) => void;
 }
