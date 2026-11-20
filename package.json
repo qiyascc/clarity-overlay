@@ -3,7 +3,10 @@
   "version": "0.1.1",
   "description": "Pins heatmaps, predicted clicks and review notes onto a live or replayed web page.",
   "license": "Apache-2.0",
-  "repository": "github:qiyascc/overlay-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qiyascc/overlay-sdk.git"
+  },
   "type": "module",
   "packageManager": "pnpm@10.24.0",
   "main": "./dist/index.js",
