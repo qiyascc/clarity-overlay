@@ -18,7 +18,7 @@ export function resolveAnchor(doc: Document, anchor: Anchor | null | undefined):
 }
 
 export function documentBox(element: Element): Box {
-  const rect = element.getBoundingClientRect();
+  const rect = tightRect(element);
   const view = element.ownerDocument.defaultView;
   return {
     x: rect.left + (view?.scrollX ?? 0),
@@ -26,6 +26,19 @@ export function documentBox(element: Element): Box {
     width: rect.width,
     height: rect.height,
   };
+}
+
+const CONTROLS = "a, button, input, select, textarea, summary, label, [role=button], [role=link]";
+
+function tightRect(element: Element): DOMRect {
+  const outer = element.getBoundingClientRect();
+  if (element.matches(CONTROLS)) return outer;
+  const range = element.ownerDocument.createRange?.();
+  if (!range) return outer;
+  range.selectNodeContents(element);
+  const inner = range.getBoundingClientRect?.();
+  if (!inner || inner.width === 0 || inner.height === 0) return outer;
+  return inner.width * 1.5 < outer.width ? inner : outer;
 }
 
 export function isFixed(element: Element): boolean {
