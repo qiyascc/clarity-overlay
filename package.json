@@ -1,6 +1,6 @@
 {
-  "name": "@qiyascc/clarity-overlay",
-  "version": "0.1.0",
+  "name": "@qiyas/overlay-sdk",
+  "version": "0.1.1",
   "description": "Pins heatmaps, predicted clicks and review notes onto a live or replayed web page.",
   "license": "Apache-2.0",
   "repository": "github:qiyascc/overlay-sdk",
@@ -23,7 +23,8 @@
     "build": "rm -rf dist && esbuild src/index.ts --bundle --format=esm --target=es2022 --outfile=dist/index.js && esbuild src/global.ts --bundle --format=iife --target=es2022 --minify --outfile=dist/clarity-overlay.iife.js && tsc -p tsconfig.build.json",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "prepublishOnly": "pnpm lint && pnpm typecheck && pnpm test && pnpm build"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.8",
@@ -31,5 +32,8 @@
     "happy-dom": "^21.0.4",
     "typescript": "^5.9.3",
     "vitest": "^5.1.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
