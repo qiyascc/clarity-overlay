@@ -30,7 +30,7 @@ export const STYLES = `
 }
 
 .card {
-  position: fixed; width: 320px; max-height: 60vh; overflow: auto; pointer-events: auto;
+  position: fixed; width: min(320px, calc(100vw - 16px)); max-height: 60vh; overflow: auto; pointer-events: auto;
   background: #fff; color: #14171c; border-radius: 10px; padding: 14px 16px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22); font: 13px/1.5 ui-sans-serif, system-ui, sans-serif;
 }
@@ -50,7 +50,7 @@ button {
 button:hover { background: #f7f8fa; }
 
 .panel {
-  position: fixed; right: 16px; bottom: 16px; width: 280px; pointer-events: auto; background: #fff;
+  position: fixed; right: 16px; bottom: 16px; width: min(280px, calc(100vw - 32px)); pointer-events: auto; background: #fff;
   color: #14171c; border-radius: 12px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
   font: 13px/1.4 ui-sans-serif, system-ui, sans-serif; overflow: hidden;
 }

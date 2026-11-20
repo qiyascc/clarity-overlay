@@ -7,6 +7,8 @@ import type { Box, Category, LayerName, Note, OverlayData, OverlayOptions } from
 
 const HOST_ATTRIBUTE = "data-clarity-overlay";
 const LAYERS: LayerName[] = ["heatmap", "clicks", "notes"];
+const NARROW = 640;
+const CARD_WIDTH = 320;
 const HOST_STYLE: Record<string, string> = {
   all: "initial",
   display: "block",
@@ -365,12 +367,12 @@ export class Overlay {
 
     const viewportWidth = view?.innerWidth ?? 1024;
     if (!box) {
-      place(card, viewportWidth - 336, 16);
+      place(card, Math.max(8, viewportWidth - CARD_WIDTH - 16), 16);
       return card;
     }
     const scrollX = fixed ? 0 : (view?.scrollX ?? 0);
     const scrollY = fixed ? 0 : (view?.scrollY ?? 0);
-    const left = Math.min(Math.max(8, box.x - scrollX + 18), viewportWidth - 336);
+    const left = Math.max(8, Math.min(box.x - scrollX + 18, viewportWidth - CARD_WIDTH - 16));
     const top = Math.max(8, box.y - scrollY + box.height + 12);
     place(card, left, top);
     return card;
@@ -380,7 +382,8 @@ export class Overlay {
     if (!this.root || this.options.panel === false) return;
     const doc = this.document;
     const previous = this.parts.panel;
-    const collapsed = previous?.classList.contains("collapsed") ?? false;
+    const narrow = (doc.defaultView?.innerWidth ?? 1024) < NARROW;
+    const collapsed = previous ? previous.classList.contains("collapsed") : narrow;
     const categories = [...new Set(this.notes.map((note) => note.category))];
     const shown = this.shownNotes();
 

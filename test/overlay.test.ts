@@ -140,3 +140,13 @@ describe("host isolation", () => {
     style.remove();
   });
 });
+
+describe("narrow screens", () => {
+  it("starts with the panel collapsed", () => {
+    const width = window.innerWidth;
+    Object.defineProperty(window, "innerWidth", { value: 390, configurable: true });
+    overlay = mountOverlay(data(), { loadImage: async () => fakeImage });
+    expect(shadow().querySelector(".panel")?.classList.contains("collapsed")).toBe(true);
+    Object.defineProperty(window, "innerWidth", { value: width, configurable: true });
+  });
+});
