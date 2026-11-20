@@ -5,7 +5,7 @@ export const STYLES = `
 .pinned { position: fixed; inset: 0; }
 .layer { position: absolute; inset: 0; }
 .layer[hidden] { display: none; }
-canvas.heat { position: absolute; top: 0; left: 0; image-rendering: auto; }
+.heat canvas, .heat img { position: absolute; top: 0; left: 0; max-width: none; }
 
 .target {
   position: absolute; border: 1.5px solid rgba(15, 118, 110, var(--strength));

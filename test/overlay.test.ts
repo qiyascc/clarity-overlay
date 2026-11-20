@@ -111,17 +111,32 @@ describe("Overlay", () => {
     ).toEqual(["60%", "20%"]);
   });
 
-  it("sizes the heatmap canvas to document coordinates", async () => {
+  it("sizes the heatmap to document coordinates", async () => {
     const loadImage = vi.fn(async () => fakeImage);
     overlay = mountOverlay(data(), { loadImage });
     await vi.waitFor(() => expect(loadImage).toHaveBeenCalledWith("https://api.test/heat.png"));
-    const canvas = shadow().querySelector("canvas") as HTMLCanvasElement;
-    await vi.waitFor(() => expect(canvas.style.width).toBe("1440px"));
-    expect(canvas.style.height).toBe("3000px");
+    await vi.waitFor(() => expect(shadow().querySelector(".heat > *")).not.toBeNull());
+    const picture = shadow().querySelector(".heat > *") as HTMLElement;
+    expect(picture.style.width).toBe("1440px");
+    expect(picture.style.height).toBe("3000px");
   });
 
   it("can run without the panel", () => {
     overlay = mountOverlay(data({ notes: [] }), { loadImage: async () => fakeImage, panel: false });
     expect(shadow().querySelector(".panel")).toBeNull();
+  });
+});
+
+describe("host isolation", () => {
+  it("is not clipped or hidden by page styles", () => {
+    const style = document.createElement("style");
+    style.textContent = "* { overflow: hidden !important; display: none; opacity: 0; }";
+    document.head.append(style);
+    overlay = mountOverlay(data(), { loadImage: async () => fakeImage });
+    const host = document.querySelector("[data-clarity-overlay]") as HTMLElement;
+    expect(host.tagName).toBe("CLARITY-OVERLAY");
+    expect(host.style.getPropertyPriority("overflow")).toBe("important");
+    expect(host.style.getPropertyValue("display")).toBe("block");
+    style.remove();
   });
 });

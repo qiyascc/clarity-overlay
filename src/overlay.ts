@@ -7,6 +7,27 @@ import type { Box, Category, LayerName, Note, OverlayData, OverlayOptions } from
 
 const HOST_ATTRIBUTE = "data-clarity-overlay";
 const LAYERS: LayerName[] = ["heatmap", "clicks", "notes"];
+const HOST_STYLE: Record<string, string> = {
+  all: "initial",
+  display: "block",
+  position: "absolute",
+  top: "0",
+  left: "0",
+  width: "0",
+  height: "0",
+  margin: "0",
+  padding: "0",
+  border: "0",
+  overflow: "visible",
+  contain: "none",
+  transform: "none",
+  filter: "none",
+  opacity: "1",
+  visibility: "visible",
+  "clip-path": "none",
+  "z-index": "2147483647",
+  "pointer-events": "none",
+};
 const CATEGORY_LABELS: Record<Category, string> = {
   visual: "Visual",
   ux: "UX",
@@ -45,6 +66,7 @@ export class Overlay {
   private frame = 0;
   private observers: (() => void)[] = [];
   private readonly load: ImageLoader;
+  private releaseHeatmap: () => void = () => undefined;
 
   constructor(
     data: OverlayData,
@@ -70,19 +92,15 @@ export class Overlay {
     if (this.host) return this;
     const doc = this.document;
     doc.querySelector(`[${HOST_ATTRIBUTE}]`)?.remove();
-    this.host = h(doc, "div", { [HOST_ATTRIBUTE]: "" });
-    Object.assign(this.host.style, {
-      position: "absolute",
-      top: "0",
-      left: "0",
-      width: "0",
-      height: "0",
-      zIndex: "2147483647",
-    });
+    this.host = doc.createElement("clarity-overlay");
+    this.host.setAttribute(HOST_ATTRIBUTE, "");
+    for (const [property, value] of Object.entries(HOST_STYLE)) {
+      this.host.style.setProperty(property, value, "important");
+    }
     this.root = this.host.attachShadow({ mode: "open" });
     const stage = h(doc, "div", { class: "stage" });
     const pinned = h(doc, "div", { class: "pinned" });
-    const heat = h(doc, "canvas", { class: "heat layer" }) as unknown as HTMLElement;
+    const heat = h(doc, "div", { class: "heat layer" });
     const clicks = h(doc, "div", { class: "layer clicks" });
     const notes = h(doc, "div", { class: "layer notes" });
     const pinnedNotes = h(doc, "div", { class: "layer notes" });
@@ -102,6 +120,7 @@ export class Overlay {
 
   destroy(): void {
     cancelAnimationFrame(this.frame);
+    this.releaseHeatmap();
     for (const stop of this.observers) stop();
     this.observers = [];
     this.host?.remove();
@@ -212,16 +231,18 @@ export class Overlay {
   }
 
   private async renderHeatmap(): Promise<void> {
-    const canvas = this.parts.heat as HTMLCanvasElement | undefined;
-    if (!canvas) return;
+    const layer = this.parts.heat;
+    this.releaseHeatmap();
+    if (!layer) return;
+    layer.replaceChildren();
     if (!this.data.heatmap) {
       this.applyVisibility();
       return;
     }
     try {
-      await drawHeatmap(canvas, this.data.heatmap, this.load);
+      this.releaseHeatmap = await drawHeatmap(layer, this.data.heatmap, this.load);
     } catch {
-      canvas.hidden = true;
+      layer.hidden = true;
     }
   }
 
