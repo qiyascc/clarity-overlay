@@ -1,5 +1,10 @@
 # Clarity Overlay
 
+[![npm](https://img.shields.io/npm/v/@qiyas/overlay-sdk?color=CB3837&logo=npm&logoColor=white)](https://www.npmjs.com/package/@qiyas/overlay-sdk)
+[![Downloads](https://img.shields.io/npm/dm/@qiyas/overlay-sdk?color=CB3837)](https://www.npmjs.com/package/@qiyas/overlay-sdk)
+[![Types](https://img.shields.io/npm/types/@qiyas/overlay-sdk?logo=typescript&logoColor=white)](https://www.npmjs.com/package/@qiyas/overlay-sdk)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+
 Draws website analysis on top of the page it belongs to: an attention heatmap,
 predicted click targets and numbered review notes, with a small control panel
 to toggle layers and step through notes.
