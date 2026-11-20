@@ -1,8 +1,5 @@
 import { colorize } from "../heat";
-import type { Heatmap } from "../types";
-
-export type LoadedImage = CanvasImageSource & { width: number; height: number };
-export type ImageLoader = (src: string) => Promise<LoadedImage>;
+import type { Heatmap, ImageLoader } from "../types";
 
 export const fetchImage: ImageLoader = async (src) => {
   const response = await fetch(src, { credentials: "include" });

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mountOverlay, type Overlay } from "../src/overlay";
-import type { Note, OverlayData } from "../src/types";
+import type { Note, OverlayData, OverlayOptions } from "../src/types";
 
 const note = (id: string, overrides: Partial<Note> = {}): Note => ({
   id,
@@ -113,7 +113,8 @@ describe("Overlay", () => {
 
   it("sizes the heatmap to document coordinates", async () => {
     const loadImage = vi.fn(async () => fakeImage);
-    overlay = mountOverlay(data(), { loadImage });
+    const options: OverlayOptions = { loadImage };
+    overlay = mountOverlay(data(), options);
     await vi.waitFor(() => expect(loadImage).toHaveBeenCalledWith("https://api.test/heat.png"));
     await vi.waitFor(() => expect(shadow().querySelector(".heat > *")).not.toBeNull());
     const picture = shadow().querySelector(".heat > *") as HTMLElement;

@@ -1,9 +1,17 @@
 import { resolveAnchor } from "./anchor";
 import { h, place } from "./dom";
-import { drawHeatmap, fetchImage, type ImageLoader } from "./layers/heatmap";
+import { drawHeatmap, fetchImage } from "./layers/heatmap";
 import { orderNotes } from "./order";
 import { SEVERITY_COLORS, STYLES } from "./styles";
-import type { Box, Category, LayerName, Note, OverlayData, OverlayOptions } from "./types";
+import type {
+  Box,
+  Category,
+  ImageLoader,
+  LayerName,
+  Note,
+  OverlayData,
+  OverlayOptions,
+} from "./types";
 
 const HOST_ATTRIBUTE = "data-clarity-overlay";
 const LAYERS: LayerName[] = ["heatmap", "clicks", "notes"];
@@ -45,9 +53,8 @@ interface Placed {
   fixed: boolean;
 }
 
-export interface OverlayConfig extends OverlayOptions {
-  loadImage?: ImageLoader;
-}
+/** @deprecated Use `OverlayOptions`, which now carries `loadImage`. */
+export type OverlayConfig = OverlayOptions;
 
 export class Overlay {
   readonly document: Document;
@@ -72,7 +79,7 @@ export class Overlay {
 
   constructor(
     data: OverlayData,
-    private readonly options: OverlayConfig = {},
+    private readonly options: OverlayOptions = {},
   ) {
     this.document = options.document ?? document;
     this.data = data;
@@ -538,6 +545,6 @@ export class Overlay {
   }
 }
 
-export function mountOverlay(data: OverlayData, options: OverlayConfig = {}): Overlay {
+export function mountOverlay(data: OverlayData, options: OverlayOptions = {}): Overlay {
   return new Overlay(data, options).mount();
 }
