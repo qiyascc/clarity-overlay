@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Pins heatmaps, predicted clicks and review notes onto a live or replayed web page.",
   "license": "Apache-2.0",
-  "repository": "github:qiyascc/clarity-overlay",
+  "repository": "github:qiyascc/overlay-sdk",
   "type": "module",
   "packageManager": "pnpm@10.24.0",
   "main": "./dist/index.js",

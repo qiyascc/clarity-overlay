@@ -13,7 +13,7 @@ browser extension, or a replayed snapshot inside an iframe.
 Releases ship a packed tarball:
 
 ```sh
-pnpm add https://github.com/qiyascc/clarity-overlay/releases/download/v0.1.0/qiyascc-clarity-overlay-0.1.0.tgz
+pnpm add https://github.com/qiyascc/overlay-sdk/releases/download/v0.1.0/qiyascc-clarity-overlay-0.1.0.tgz
 ```
 
 or load `dist/clarity-overlay.iife.js`, which exposes `window.ClarityOverlay`.
